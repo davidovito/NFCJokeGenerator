@@ -38,6 +38,7 @@ extern "C" {
 #include "stm32f3xx_ll_cortex.h"
 #include "stm32f3xx_ll_utils.h"
 #include "stm32f3xx_ll_pwr.h"
+#include "stm32f3xx_ll_tim.h"
 #include "stm32f3xx_ll_usart.h"
 #include "stm32f3xx_ll_gpio.h"
 
@@ -69,8 +70,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define Neopixel_Pin LL_GPIO_PIN_3
-#define Neopixel_GPIO_Port GPIOA
 #define DET_Pin LL_GPIO_PIN_4
 #define DET_GPIO_Port GPIOA
 #define I2C_GPO_Pin LL_GPIO_PIN_6
