@@ -8,6 +8,8 @@
 
 #include "nfc_io.h"
 #include "i2c.h"
+#include "m24sr.h"
+
 
 void NFC_IO_Init(uint8_t GpoIrqEnable){
 
@@ -17,15 +19,15 @@ void NFC_IO_DeInit(void){
 
 }
 
-uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length){
-	if(I2C_ReadMultiByte(NFC_READ, Addr, pBuffer, Lenght) != 0){
+uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint16_t Length){
+	if(I2C_ReadMultiByte(NFC_READ, Addr, pBuffer, Length) != 0){
 		return NFC_IO_ERROR_TIMEOUT;
 	}
 	return NFC_IO_STATUS_SUCCESS;
 }
 
-uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length){
-	if(I2C_WriteMultiByte(NFC_WRITE, Addr, pBuffer, Lenght) != 0){
+uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint16_t Length){
+	if(I2C_WriteMultiByte(NFC_WRITE, Addr, pBuffer, Length) != 0){
 		return NFC_IO_ERROR_TIMEOUT;
 	}
 	return NFC_IO_STATUS_SUCCESS;
