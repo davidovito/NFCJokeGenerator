@@ -102,4 +102,51 @@ void MX_I2C1_Init(void)
 
 /* USER CODE BEGIN 1 */
 
+uint8_t I2C_WriteMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data, uint16_t Size)
+{
+    while (LL_I2C_IsActiveFlag_BUSY(I2C1));
+
+    LL_I2C_HandleTransfer(I2C1, DevAddress & 0xFE, LL_I2C_ADDRSLAVE_7BIT, Size + 1, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_WRITE);
+
+    while (!LL_I2C_IsActiveFlag_TXIS(I2C1));
+    LL_I2C_TransmitData8(I2C1, RegAddress);
+
+    for (uint16_t i = 0; i < Size; i++)
+    {
+        while (!LL_I2C_IsActiveFlag_TXIS(I2C1));
+        LL_I2C_TransmitData8(I2C1, Data[i]);
+    }
+
+    while (!LL_I2C_IsActiveFlag_STOP(I2C1));
+    LL_I2C_ClearFlag_STOP(I2C1);
+
+    return 0;
+}
+
+
+uint8_t I2C_ReadMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data, uint16_t Size)
+{
+    while (LL_I2C_IsActiveFlag_BUSY(I2C1));
+
+    LL_I2C_HandleTransfer(I2C1, DevAddress & 0xFE, LL_I2C_ADDRSLAVE_7BIT, 1, LL_I2C_MODE_SOFTEND, LL_I2C_GENERATE_START_WRITE);
+
+        if (Size > 1) {
+        	RegAddress |= 0x80; // Set MSB for auto-increment
+        }
+
+    LL_I2C_TransmitData8(I2C1, RegAddress);
+    while (!LL_I2C_IsActiveFlag_TC(I2C1));
+
+    LL_I2C_HandleTransfer(I2C1, DevAddress | 0x01, LL_I2C_ADDRSLAVE_7BIT, Size, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_READ);
+
+    for (uint16_t i = 0; i < Size; i++)
+    {
+        while (!LL_I2C_IsActiveFlag_RXNE(I2C1));
+        Data[i] = LL_I2C_ReceiveData8(I2C1);
+    }
+    while (!LL_I2C_IsActiveFlag_STOP(I2C1));
+    LL_I2C_ClearFlag_STOP(I2C1);
+
+    return 0;
+}
 /* USER CODE END 1 */
