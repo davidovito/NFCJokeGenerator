@@ -68,3 +68,34 @@ void NFC_IO_Delay(uint32_t Delay){
 }
 
 
+uint8_t* convert_to_NDEF(char text[]){
+	if (text == 0)
+		return 0;
+
+	size_t msg_size = strlen(text);
+
+	uint8_t TNF_FLAGS = 0xD1;
+	uint8_t type_length = 0x1;
+	uint8_t payload_length = (uint8_t)msg_size+3;
+	uint8_t type_text = 0x54;
+	uint8_t status = 0x02;
+	uint8_t language1 = 0x65;
+	uint8_t language2 = 0x6E;
+
+
+	size_t total_length = 7 + msg_size;
+
+	uint8_t ndef_header[] = {TNF_FLAGS, type_length, payload_length, type_text, status, language1, language2};
+
+	uint8_t ndef_msg[total_length];
+	memcpy(ndef_msg, ndef_header, 7);
+	memcpy(&ndef_msg[7], text, msg_size);
+
+	memcpy(ndef_message, default_param, param_len);
+	memcpy(ndef_message + param_len, message, strlen(message) + 1);
+
+
+	return ndef_msg;
+}
+
+
