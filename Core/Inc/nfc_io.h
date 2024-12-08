@@ -13,6 +13,10 @@
 #include "stm32f3xx_ll_i2c.h"
 #include "stm32f3xx_ll_gpio.h"
 
+#define NFC_WRITE 0xAC
+#define NFC_READ  0xAD
+
+
 void NFC_IO_Init(uint8_t GpoIrqEnable);
 void NFC_IO_DeInit(void);
 uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length);
