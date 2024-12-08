@@ -1,8 +1,6 @@
 # STM32CubeIDE specific files
 .settings/
 .metadata/
-.cproject
-.project
 
 # Build directories
 /Debug/
