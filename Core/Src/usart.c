@@ -92,16 +92,16 @@ void MX_USART2_UART_Init(void)
   LL_USART_ConfigAsyncMode(USART2);
   LL_USART_Enable(USART2);
   /* USER CODE BEGIN USART2_Init 2 */
-  void USART2_PutBuffer(uint8_t *buffer, uint8_t length){
-  	LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_7, (uint32_t)buffer);
-  	LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_7, length);
-  	LL_DMA_EnableIT_TC(DMA1, LL_DMA_CHANNEL_7);
-  	LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_7);
-  }
+
   /* USER CODE END USART2_Init 2 */
 
 }
 
 /* USER CODE BEGIN 1 */
-
+void USART2_PutBuffer(uint8_t *buffer, uint8_t length){
+	LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_7, (uint32_t)buffer);
+	LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_7, length);
+	LL_DMA_EnableIT_TC(DMA1, LL_DMA_CHANNEL_7);
+	LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_7);
+}
 /* USER CODE END 1 */
