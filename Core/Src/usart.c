@@ -75,7 +75,10 @@ void MX_USART2_UART_Init(void)
   NVIC_EnableIRQ(USART2_IRQn);
 
   /* USER CODE BEGIN USART2_Init 1 */
+  LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_7, LL_USART_DMA_GetRegAddr(USART2, LL_USART_DMA_REG_DATA_TRANSMIT));
+  LL_USART_EnableDMAReq_TX(USART2);
 
+  LL_DMA_EnableIT_TE(DMA1, LL_DMA_CHANNEL_7);
   /* USER CODE END USART2_Init 1 */
   USART_InitStruct.BaudRate = 115200;
   USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
@@ -89,7 +92,12 @@ void MX_USART2_UART_Init(void)
   LL_USART_ConfigAsyncMode(USART2);
   LL_USART_Enable(USART2);
   /* USER CODE BEGIN USART2_Init 2 */
-
+  void USART2_PutBuffer(uint8_t *buffer, uint8_t length){
+  	LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_7, (uint32_t)buffer);
+  	LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_7, length);
+  	LL_DMA_EnableIT_TC(DMA1, LL_DMA_CHANNEL_7);
+  	LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_7);
+  }
   /* USER CODE END USART2_Init 2 */
 
 }
