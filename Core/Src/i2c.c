@@ -102,7 +102,7 @@ void MX_I2C1_Init(void)
 
 /* USER CODE BEGIN 1 */
 
-uint8_t I2C_WriteMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data, uint16_t Size)
+uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length)
 {
     while (LL_I2C_IsActiveFlag_BUSY(I2C1));
 
@@ -114,7 +114,7 @@ uint8_t I2C_WriteMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data
     for (uint16_t i = 0; i < Size; i++)
     {
         while (!LL_I2C_IsActiveFlag_TXIS(I2C1));
-        LL_I2C_TransmitData8(I2C1, Data[i]);
+        LL_I2C_TransmitData8(I2C1, pBuffer[i]);
     }
 
     while (!LL_I2C_IsActiveFlag_STOP(I2C1));
@@ -124,7 +124,7 @@ uint8_t I2C_WriteMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data
 }
 
 
-uint8_t I2C_ReadMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data, uint16_t Size)
+uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length)
 {
     while (LL_I2C_IsActiveFlag_BUSY(I2C1));
 
@@ -142,7 +142,7 @@ uint8_t I2C_ReadMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data,
     for (uint16_t i = 0; i < Size; i++)
     {
         while (!LL_I2C_IsActiveFlag_RXNE(I2C1));
-        Data[i] = LL_I2C_ReceiveData8(I2C1);
+        pBuffer[i] = LL_I2C_ReceiveData8(I2C1);
     }
     while (!LL_I2C_IsActiveFlag_STOP(I2C1));
     LL_I2C_ClearFlag_STOP(I2C1);

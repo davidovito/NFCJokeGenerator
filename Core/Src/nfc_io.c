@@ -19,6 +19,7 @@ void NFC_IO_DeInit(void){
 
 }
 
+/*
 uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint16_t Length){
 	if(I2C_ReadMultiByte(NFC_READ, Addr, pBuffer, Length) != 0){
 		return NFC_IO_ERROR_TIMEOUT;
@@ -32,6 +33,8 @@ uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint16_t Length){
 	}
 	return NFC_IO_STATUS_SUCCESS;
 }
+
+*/
 
 uint16_t NFC_IO_IsDeviceReady(uint8_t Addr, uint32_t Trials){
     for (uint32_t i = 0; i < Trials; i++)

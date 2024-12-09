@@ -27,6 +27,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "m24sr.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -39,8 +40,8 @@ extern "C" {
 void MX_I2C1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-uint8_t I2C_WriteMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data, uint16_t Size);
-uint8_t I2C_ReadMultiByte(uint8_t DevAddress, uint8_t RegAddress, uint8_t *Data, uint16_t Size);
+uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length);
+uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
