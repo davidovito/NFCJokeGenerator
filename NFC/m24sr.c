@@ -21,7 +21,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "string.h"
 #include "m24sr.h"
-
 /** @addtogroup BSP
   * @{
   */

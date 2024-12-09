@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "i2c.h"
+#include "m24sr.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -102,16 +103,16 @@ void MX_I2C1_Init(void)
 
 /* USER CODE BEGIN 1 */
 
-uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length)
+uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint16_t Length)
 {
     while (LL_I2C_IsActiveFlag_BUSY(I2C1));
 
-    LL_I2C_HandleTransfer(I2C1, DevAddress & 0xFE, LL_I2C_ADDRSLAVE_7BIT, Size + 1, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_WRITE);
-
+    LL_I2C_HandleTransfer(I2C1, Addr & 0xFE, LL_I2C_ADDRSLAVE_7BIT, Length + 1, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_WRITE);
+/*
     while (!LL_I2C_IsActiveFlag_TXIS(I2C1));
     LL_I2C_TransmitData8(I2C1, RegAddress);
-
-    for (uint16_t i = 0; i < Size; i++)
+*/
+    for (uint16_t i = 0; i < Length; i++)
     {
         while (!LL_I2C_IsActiveFlag_TXIS(I2C1));
         LL_I2C_TransmitData8(I2C1, pBuffer[i]);
@@ -124,22 +125,22 @@ uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length)
 }
 
 
-uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint8_t Length)
+uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint16_t Length)
 {
     while (LL_I2C_IsActiveFlag_BUSY(I2C1));
-
+/*
     LL_I2C_HandleTransfer(I2C1, DevAddress & 0xFE, LL_I2C_ADDRSLAVE_7BIT, 1, LL_I2C_MODE_SOFTEND, LL_I2C_GENERATE_START_WRITE);
 
         if (Size > 1) {
         	RegAddress |= 0x80; // Set MSB for auto-increment
         }
-
-    LL_I2C_TransmitData8(I2C1, RegAddress);
+*/
+    LL_I2C_TransmitData8(I2C1, Addr);
     while (!LL_I2C_IsActiveFlag_TC(I2C1));
 
-    LL_I2C_HandleTransfer(I2C1, DevAddress | 0x01, LL_I2C_ADDRSLAVE_7BIT, Size, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_READ);
+  //  LL_I2C_HandleTransfer(I2C1, DevAddress | 0x01, LL_I2C_ADDRSLAVE_7BIT, Length, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_READ);
 
-    for (uint16_t i = 0; i < Size; i++)
+    for (uint16_t i = 0; i < Length; i++)
     {
         while (!LL_I2C_IsActiveFlag_RXNE(I2C1));
         pBuffer[i] = LL_I2C_ReceiveData8(I2C1);

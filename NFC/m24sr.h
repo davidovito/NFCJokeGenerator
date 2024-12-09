@@ -28,6 +28,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stdint.h"
 
+
+#include "i2c.h"
+#include "nfc_io.h"
 /** @addtogroup BSP
   * @{
   */

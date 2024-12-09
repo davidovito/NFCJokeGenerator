@@ -6,10 +6,8 @@
  */
 
 
-#include "nfc_io.h"
 #include "i2c.h"
 #include "m24sr.h"
-
 
 void NFC_IO_Init(uint8_t GpoIrqEnable){
 
