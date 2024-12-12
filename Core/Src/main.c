@@ -100,6 +100,8 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
+  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
+  M24SR_ManageRFGPO(NFC_WRITE, 1);
 
 
   /* USER CODE END 2 */

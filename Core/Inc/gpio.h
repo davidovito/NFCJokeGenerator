@@ -39,7 +39,8 @@ extern "C" {
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void NFC_IO_Init(uint8_t GpoIrqEnable);
+void NFC_IO_DeInit(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

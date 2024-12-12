@@ -12,13 +12,16 @@
 #include "stdint.h"
 #include "stm32f3xx_ll_i2c.h"
 #include "stm32f3xx_ll_gpio.h"
+#include "m24sr.h"
 
 #define NFC_WRITE 0xAC
 #define NFC_READ  0xAD
+#define DEFAULT_PASSWORD_INIT { \
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  \
+}
 
 
-void NFC_IO_Init(uint8_t GpoIrqEnable);
-void NFC_IO_DeInit(void);
 
 uint16_t NFC_IO_IsDeviceReady(uint8_t Addr, uint32_t Trials);
 void NFC_IO_ReadState(uint8_t *pPinState);

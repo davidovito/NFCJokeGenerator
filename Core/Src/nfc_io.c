@@ -9,48 +9,21 @@
 #include "i2c.h"
 #include "m24sr.h"
 
-void NFC_IO_Init(uint8_t GpoIrqEnable){
+uint8_t DefaultPassword[16] = DEFAULT_PASSWORD_INIT;
 
-}
 
-void NFC_IO_DeInit(void){
+uint16_t NFC_IO_IsDeviceReady(uint8_t Addr, uint32_t Trials)
+{
+    HAL_StatusTypeDef status;
 
-}
-
-/*
-uint16_t NFC_IO_ReadMultiple(uint8_t Addr, uint8_t *pBuffer, uint16_t Length){
-	if(I2C_ReadMultiByte(NFC_READ, Addr, pBuffer, Length) != 0){
-		return NFC_IO_ERROR_TIMEOUT;
-	}
-	return NFC_IO_STATUS_SUCCESS;
-}
-
-uint16_t NFC_IO_WriteMultiple(uint8_t Addr, uint8_t *pBuffer, uint16_t Length){
-	if(I2C_WriteMultiByte(NFC_WRITE, Addr, pBuffer, Length) != 0){
-		return NFC_IO_ERROR_TIMEOUT;
-	}
-	return NFC_IO_STATUS_SUCCESS;
-}
-
-*/
-
-uint16_t NFC_IO_IsDeviceReady(uint8_t Addr, uint32_t Trials){
-    for (uint32_t i = 0; i < Trials; i++)
+    // Check if the device is ready
+    status = HAL_I2C_IsDeviceReady(&hi2c1, Addr, Trials, NFC_I2C_TIMEOUT);
+    if (status != HAL_OK)
     {
-        LL_I2C_HandleTransfer(I2C1, Addr, LL_I2C_ADDRSLAVE_7BIT, 0, LL_I2C_MODE_SOFTEND, LL_I2C_GENERATE_START_WRITE);
-
-        if (LL_I2C_IsActiveFlag_NACK(I2C1))
-        {
-            LL_I2C_ClearFlag_NACK(I2C1);
-            NFC_IO_Delay(10);
-        }
-        else
-        {
-            return NFC_IO_STATUS_SUCCESS;
-        }
+        return NFC_IO_ERROR_TIMEOUT;
     }
 
-    return NFC_IO_ERROR_TIMEOUT;
+    return NFC_IO_STATUS_SUCCESS;
 }
 
 void NFC_IO_ReadState(uint8_t *pPinState){
@@ -67,7 +40,7 @@ void NFC_IO_RfDisable(uint8_t PinState){
 }
 
 void NFC_IO_Delay(uint32_t Delay){
-
+	LL_mDelay(Delay);
 }
 
 
@@ -92,6 +65,58 @@ uint8_t convert_to_NDEF(char *text, uint8_t *ndef){
     memcpy(ndef + sizeof(ndef_header), text, strlen(text));
 
 	return 0;
+}
+
+
+uint16_t Write_Joke_TO_NFC(uint8_t *ndef_message, uint16_t celkova_dlzka)
+{
+    char msg02[100];
+    uint16_t status;
+
+    // Start I2C communication
+    M24SR_KillSession(NFC_WRITE);
+
+    // Send SelectNDEFTagApplication command
+    M24SR_SelectApplication(NFC_WRITE);
+
+    // Select NDEF file
+    status = M24SR_SelectNDEFfile(NFC_WRITE, 0x0001);
+
+    if (status == M24SR_ERROR_TIMEOUT) {
+        // If timeout occurred, print a timeout message
+        sprintf(msg02, "Timeout occurred\n\r");
+    } else {
+        // Otherwise, print the returned status as a decimal or hex
+        sprintf(msg02, "Status: %d\n\r", status);
+    }
+
+    USART2_PutBuffer((uint8_t *)msg02, strlen(msg02));
+    LL_mDelay(50);
+
+    // Verify access with password for the NDEF file
+    M24SR_Verify(NFC_WRITE, 0x0002, 0x10, DefaultPassword);
+
+    // Write the joke to the NDEF file
+    M24SR_UpdateBinary(NFC_WRITE, 0x00, celkova_dlzka, ndef_message);
+
+    // Verify access with password for the system file
+    M24SR_Verify(NFC_WRITE, 0x0001, 0x10, DefaultPassword);
+
+    // Re-select the NDEF file
+    M24SR_SelectNDEFfile(NFC_WRITE, 0x0001);
+
+    // Read the length of the NDEF file
+    uint8_t buffer[2];
+    M24SR_ReadBinary(NFC_WRITE, 0x00, 0x02, buffer);
+
+    // End communication
+    M24SR_Deselect(NFC_WRITE);
+
+    sprintf(msg02, "presiel som az sem \n\r");
+    USART2_PutBuffer((uint8_t *)msg02, strlen(msg02));
+    LL_mDelay(50);
+
+    return status;
 }
 
 
