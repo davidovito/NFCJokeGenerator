@@ -25,6 +25,8 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "SDcard.h"
+#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -100,9 +102,17 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
-  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
-  M24SR_ManageRFGPO(NFC_WRITE, 1);
+//  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
+//  M24SR_ManageRFGPO(NFC_WRITE, 1);
+  sdCardInit();
+  char joke[250];
+  char msg[250];
 
+  readRandomJokes(1, joke);
+
+
+  sprintf(msg, "%c\r\n", joke);
+  USART2_PutBuffer(msg, strlen(msg));
 
   /* USER CODE END 2 */
 
