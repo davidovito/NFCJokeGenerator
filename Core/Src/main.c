@@ -25,7 +25,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-#include "SDcard.h"
+#include "sdCard.h"
 #include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -111,8 +111,8 @@ int main(void)
   readRandomJokes(1, joke);
 
 
-  sprintf(msg, "%c\r\n", joke);
-  USART2_PutBuffer(msg, strlen(msg));
+  //sprintf(msg, "%s\r\n", joke);
+  USART2_PutBuffer(joke, strlen(joke));
 
   /* USER CODE END 2 */
 

@@ -1,4 +1,4 @@
-#include "SDcard.h"
+#include "sdCard.h"
 #include "fatfs.h"
 
 #include <stdio.h>
@@ -79,7 +79,7 @@ uint8_t sdCardInit() {
         return 1; // Error: failed to mount
     }
 
-    const char *fileNames[MAX_FILES] = {"jokes1.txt", "jokes2.txt", "jokes3.txt", "jokes4.txt", "jokes5.txt"};
+    const char *fileNames[MAX_FILES] = {"jokes.txt", "jokes2.txt"};
 
     for (int i = 0; i < MAX_FILES && fileNames[i] != NULL; i++) {
         fres = f_open(&files[i], fileNames[i], FA_READ);
