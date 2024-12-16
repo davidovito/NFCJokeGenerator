@@ -27,7 +27,6 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "m24sr.h"
 
 /* USER CODE BEGIN Includes */
 

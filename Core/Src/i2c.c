@@ -98,7 +98,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
 
     /* I2C1 DMA Init */
     /* I2C1_TX Init */
-    hdma_i2c1_tx.Instance = DMA1_Channel2;
+    hdma_i2c1_tx.Instance = DMA1_Channel4;
     hdma_i2c1_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
     hdma_i2c1_tx.Init.PeriphInc = DMA_PINC_DISABLE;
     hdma_i2c1_tx.Init.MemInc = DMA_MINC_ENABLE;
@@ -111,7 +111,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
       Error_Handler();
     }
 
-    __HAL_DMA_REMAP_CHANNEL_ENABLE(HAL_REMAPDMA_I2C1_TX_DMA1_CH2);
+    __HAL_DMA_REMAP_CHANNEL_ENABLE(HAL_REMAPDMA_I2C1_TX_DMA1_CH4);
 
     __HAL_LINKDMA(i2cHandle,hdmatx,hdma_i2c1_tx);
 

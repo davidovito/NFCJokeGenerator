@@ -25,8 +25,6 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-#include "sdCard.h"
-#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -51,7 +49,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+WS28XX_HandleTypeDef neopixel;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -100,9 +98,10 @@ int main(void)
   MX_FATFS_Init();
   MX_I2C1_Init();
   MX_USART2_UART_Init();
-  MX_TIM15_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-//  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
+  WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+  //  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
 //  M24SR_ManageRFGPO(NFC_WRITE, 1);
   sdCardInit();
   char joke[250];
@@ -121,7 +120,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-//tu bude kod
 
     /* USER CODE BEGIN 3 */
   }
@@ -134,8 +132,8 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-  LL_FLASH_SetLatency(LL_FLASH_LATENCY_0);
-  while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_0)
+  LL_FLASH_SetLatency(LL_FLASH_LATENCY_2);
+  while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_2)
   {
   }
   LL_RCC_HSI_Enable();
@@ -146,17 +144,25 @@ void SystemClock_Config(void)
 
   }
   LL_RCC_HSI_SetCalibTrimming(16);
-  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
-  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
-  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
-  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_HSI);
+  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI_DIV_2, LL_RCC_PLL_MUL_16);
+  LL_RCC_PLL_Enable();
 
-   /* Wait till System clock is ready */
-  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_HSI)
+   /* Wait till PLL is ready */
+  while(LL_RCC_PLL_IsReady() != 1)
   {
 
   }
-  LL_SetSystemCoreClock(8000000);
+  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_2);
+  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
+
+   /* Wait till System clock is ready */
+  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+  {
+
+  }
+  LL_SetSystemCoreClock(64000000);
 
    /* Update the time base */
   if (HAL_InitTick (TICK_INT_PRIORITY) != HAL_OK)
@@ -164,6 +170,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   LL_RCC_SetI2CClockSource(LL_RCC_I2C1_CLKSOURCE_HSI);
+  LL_RCC_SetTIMClockSource(LL_RCC_TIM1_CLKSOURCE_PCLK2);
 }
 
 /* USER CODE BEGIN 4 */
