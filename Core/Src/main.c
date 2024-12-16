@@ -28,7 +28,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ws28xx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -103,6 +103,10 @@ int main(void)
   WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
   //  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
 //  M24SR_ManageRFGPO(NFC_WRITE, 1);
+
+  WS28XX_SetPixel_RGB(&neopixel, 0, 50, 50, 50);
+  WS28XX_Update(&neopixel);
+
   sdCardInit();
   char joke[250];
   char msg[250];
