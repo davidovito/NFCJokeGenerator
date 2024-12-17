@@ -42,7 +42,11 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+enum EDGE_TYPE {
+	 NONE = 0,
+	 RISE = 1,
+	 FALL = 2
+};
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -64,7 +68,7 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+enum EDGE_TYPE edgeDetect(uint16_t pin_state, uint16_t samples);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
