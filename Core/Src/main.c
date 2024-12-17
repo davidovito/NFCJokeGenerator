@@ -39,6 +39,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 int led = 0;
+uint8_t numOfSamps = 0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -190,6 +191,21 @@ void ledCount(uint32_t stateOfButton){
 		ledLight(led);
     }
 }
+/*Detekcia nabeznej hrany*/
+enum EDGE_TYPE edgeDetect(double pin_state, double samples){
+	if (pin_state == 1) {
+    	numOfSamps++;
+    	if (numOfSamps >= samples) {
+    		numOfSamps = 0;
+            return RISE;
+        }
+	}
+    else if (pin_state == 0) {
+    	numOfSamps = 0;
+    }
+	return NONE;
+}
+
 /*Reset led svetiel*/
 void resetLight(){
 	WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
