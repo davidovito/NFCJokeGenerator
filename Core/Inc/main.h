@@ -42,6 +42,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+extern uint8_t pushButton;
+
 enum EDGE_TYPE {
 	 NONE = 0,
 	 RISE = 1,
@@ -76,6 +78,7 @@ enum EDGE_TYPE edgeDetect(uint16_t pin_state, uint16_t samples);
 #define DET_GPIO_Port GPIOA
 #define Jokes_Button_Pin LL_GPIO_PIN_5
 #define Jokes_Button_GPIO_Port GPIOA
+#define Jokes_Button_EXTI_IRQn EXTI9_5_IRQn
 #define I2C_GPO_Pin LL_GPIO_PIN_6
 #define I2C_GPO_GPIO_Port GPIOA
 #define RF_DIS_Pin LL_GPIO_PIN_7

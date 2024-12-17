@@ -40,6 +40,7 @@
 /* USER CODE BEGIN PD */
 uint8_t led = 0;
 uint8_t numOfSamps = 0;
+uint8_t pushButton = 0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -124,6 +125,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(pushButton == 0){
+		  uint32_t actualState = !(*((volatile uint32_t *)((uint32_t)(0x48000000 + 0x10U))) & (1 << 5));
+	  	  ledCount(actualState);
+	  }
+	  LL_mDelay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -187,6 +193,7 @@ void ledCount(uint32_t stateOfButton){
 			led = 0;
 		}
 		ledLight(led);
+		pushButton = 1;
     }
 }
 
