@@ -125,9 +125,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	uint32_t actualState = !(*((volatile uint32_t *)((uint32_t)(0x48000000 + 0x10U))) & (1 << 3));
-	ledCount(actualState);
-	LL_mDelay(10);
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
