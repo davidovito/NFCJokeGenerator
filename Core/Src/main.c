@@ -38,7 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+int led = 0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -124,7 +124,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	uint32_t actualState = !(*((volatile uint32_t *)((uint32_t)(0x48000000 + 0x10U))) & (1 << 3));
+	ledCount(actualState);
+	LL_mDelay(10);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -178,7 +180,29 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+/*Tlačidlo na zmenu režimu*/
+void ledCount(uint32_t stateOfButton){
+	if (edgeDetect(stateOfButton, 10) == RISE){
+		led++;
+		if(led >= 8){
+			led = 0;
+		}
+		ledLight(led);
+    }
+}
+/*Reset led svetiel*/
+void resetLight(){
+	WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+	WS28XX_SetPixel_RGB(&neopixel, 0, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 1, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 2, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 3, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 4, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 5, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 6, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 7, 0, 0, 0);
+	WS28XX_Update(&neopixel);
+}
 /* USER CODE END 4 */
 
 /**
