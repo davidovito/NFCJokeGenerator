@@ -38,7 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-int led = 0;
+uint8_t led = 0;
 uint8_t numOfSamps = 0;
 /* USER CODE END PD */
 
@@ -181,7 +181,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-/*Tlačidlo na zmenu režimu*/
+/***************************************Tlačidlo na zmenu režimu****************************************/
 void ledCount(uint32_t stateOfButton){
 	if (edgeDetect(stateOfButton, 10) == RISE){
 		led++;
@@ -191,8 +191,9 @@ void ledCount(uint32_t stateOfButton){
 		ledLight(led);
     }
 }
-/*Detekcia nabeznej hrany*/
-enum EDGE_TYPE edgeDetect(double pin_state, double samples){
+
+/***************************************Detekcia nabeznej hrany************************************/
+enum EDGE_TYPE edgeDetect(uint16_t pin_state, uint16_t samples){
 	if (pin_state == 1) {
     	numOfSamps++;
     	if (numOfSamps >= samples) {
@@ -206,7 +207,7 @@ enum EDGE_TYPE edgeDetect(double pin_state, double samples){
 	return NONE;
 }
 
-/*Reset led svetiel*/
+/***************************************Reset led svetiel******************************************/
 void resetLight(){
 	WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
 	WS28XX_SetPixel_RGB(&neopixel, 0, 0, 0, 0);
@@ -218,6 +219,59 @@ void resetLight(){
 	WS28XX_SetPixel_RGB(&neopixel, 6, 0, 0, 0);
 	WS28XX_SetPixel_RGB(&neopixel, 7, 0, 0, 0);
 	WS28XX_Update(&neopixel);
+}
+
+/***************************************Ktora led ma svitit****************************************/
+void ledLight(uint8_t klik){
+    switch(klik){
+		case 1:
+			resetLight;
+			WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 50, 0, 0);
+			WS28XX_Update(&neopixel);
+			break;
+		case 2:
+			resetLight;
+			WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 50, 25, 0);
+			WS28XX_Update(&neopixel);
+			break;
+		case 3:
+			resetLight;
+			WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 50, 50, 0);
+			WS28XX_Update(&neopixel);
+			break;
+		case 4:
+			resetLight;
+			WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 0, 50, 0);
+			WS28XX_Update(&neopixel);
+			break;
+		case 5:
+			resetLight;
+			WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 0, 0, 50);
+			WS28XX_Update(&neopixel);
+			break;
+		case 6:
+			resetLight;
+			WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 25, 0, 50);
+			WS28XX_Update(&neopixel);
+			break;
+		case 7:
+			resetLight;
+			WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 30, 10, 50);
+			WS28XX_Update(&neopixel);
+        	break;
+		default:
+			resetLight;
+			WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+			WS28XX_SetPixel_RGB(&neopixel, 0, 50, 50, 50);
+			WS28XX_Update(&neopixel);
+    }
 }
 /* USER CODE END 4 */
 
