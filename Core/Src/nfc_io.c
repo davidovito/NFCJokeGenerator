@@ -48,9 +48,14 @@ uint8_t convert_to_NDEF(char *text, uint8_t *ndef){
 	if (text == 0)
 		return 1;
 
-	size_t msg_size = strlen(text);
+	size_t msg_size = strlen(text)+11;
+	uint8_t P1 = (uint8_t) ((msg_size & 0xFF00 )>>8);
+	uint8_t P2 = (uint8_t) (msg_size & 0x00FF );
 
-	uint8_t TNF_FLAGS = 0xD1;
+	size_t msg_last = strlen(text)+4;
+
+
+	uint8_t TNF_FLAGS = 0xC1;
 	uint8_t type_length = 0x1;
 	uint8_t payload_length = (uint8_t)(msg_size + 3);
 	uint8_t type_text = 0x54;
@@ -58,11 +63,11 @@ uint8_t convert_to_NDEF(char *text, uint8_t *ndef){
 	uint8_t language1 = 0x65;
 	uint8_t language2 = 0x6E;
 
-	uint8_t ndef_header[] = {TNF_FLAGS, type_length, payload_length, type_text, status, language1, language2};
+	uint8_t ndef_header[] = {P1, P2, TNF_FLAGS, type_length,  0x0 ,0x0,0x0,msg_last, type_text, status, language1, language2};
 
 
     memcpy(ndef, ndef_header, sizeof(ndef_header));
-    memcpy(ndef + sizeof(ndef_header), text, strlen(text));
+    memcpy(ndef + sizeof(ndef_header), text, strlen(text)+1);
 
 	return 0;
 }
