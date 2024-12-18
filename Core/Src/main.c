@@ -29,6 +29,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ws28xx.h"
+#include "m24sr.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -107,15 +108,16 @@ int main(void)
   WS28XX_SetPixel_RGB(&neopixel, 0, 50, 50, 50);
   WS28XX_Update(&neopixel);
 
-  sdCardInit();
-  char joke[250];
+  //char joke[250];
   char msg[250];
+  char joke[250];
+  //readRandomJokes(1, joke);
+  M24SR_Init(NFC_WRITE,M24SR_GPO_POLLING);
+   //LL_mDelay(5000);
+  srand(time(NULL));
 
-  readRandomJokes(1, joke);
+   M24SR_ManageRFGPO(NFC_WRITE, 1);
 
-
-  //sprintf(msg, "%s\r\n", joke);
-  USART2_PutBuffer(joke, strlen(joke));
 
   /* USER CODE END 2 */
 
@@ -124,6 +126,31 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
+	      if (LL_GPIO_IsInputPinSet(I2C_GPO_GPIO_Port, I2C_GPO_Pin)) {
+	         //sprintf(msg, "Netreba vtip\r\n");
+	         //USART2_PutBuffer((uint8_t*)msg, strlen(msg));
+	     } else {
+	         sprintf(msg, "Give me another one\r\n");
+	         USART2_PutBuffer((uint8_t*)msg, strlen(msg));
+	         LL_mDelay(50);
+
+	         sdCardInit();
+
+	         readRandomJokes(0, joke);
+
+	  	  	 uint8_t ndef[strlen(joke)+13];
+
+             convert_to_NDEF(&joke, &ndef);
+
+	  	  	  sprintf(msg, "%s size(strlen): %d size sizeof: %d\r\n", joke, strlen(joke), sizeof(joke));
+	  	  	  USART2_PutBuffer(msg, strlen(msg));
+	  	  	  LL_mDelay(250);
+
+	  	  	  Write_Joke_TO_NFC(&ndef, sizeof(ndef));
+	     }
+	      LL_mDelay(10);
+
 
     /* USER CODE BEGIN 3 */
   }

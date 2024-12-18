@@ -44,7 +44,7 @@ uint8_t readRandomJokes(uint8_t mode, char *fillBuffer) {
         return 1; // Error: empty file
     }
 
-    srand(time(NULL)); // Initialize random number generator
+    //srand(time(NULL)); // Initialize random number generator
     int random_line = (rand() % total_lines) + 1; // Random line number
     int current_line = 0;
 
