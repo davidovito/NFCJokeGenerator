@@ -50,7 +50,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-WS28XX_HandleTypeDef neopixel;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -101,19 +100,16 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
-  //  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
-//  M24SR_ManageRFGPO(NFC_WRITE, 1);
 
-  WS28XX_SetPixel_RGB(&neopixel, 0, 50, 50, 50);
-  WS28XX_Update(&neopixel);
+  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
+
+
+
 
   //char joke[250];
   char msg[250];
   char joke[250];
-  //readRandomJokes(1, joke);
-  M24SR_Init(NFC_WRITE,M24SR_GPO_POLLING);
-   //LL_mDelay(5000);
+
   srand(time(NULL));
 
    M24SR_ManageRFGPO(NFC_WRITE, 1);
