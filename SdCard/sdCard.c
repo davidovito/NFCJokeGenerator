@@ -9,8 +9,15 @@
 
 #define MAX_FILES 8
 #define BUF_SIZE 256
+static  FATFS FatFs;   // FatFs handle
 
 FIL files[MAX_FILES]; // Handles for multiple files
+
+
+const char *file[MAX_FILES] = {"joke1.txt", "joke2.txt", "joke3.txt", "joke4.txt", "joke5.txt", "joke6.txt","joke7.txt", "joke8.txt"};
+
+
+
 
 /*void myprintf(const char *fmt, ...) {
     static char buffer[BUF_SIZE + 30];
@@ -24,12 +31,13 @@ FIL files[MAX_FILES]; // Handles for multiple files
 } */
 
 uint8_t readRandomJokes(uint8_t mode, char *fillBuffer) {
-    if (mode >= MAX_FILES || files[mode].fs == NULL) {
+
+    if (mode >= MAX_FILES || files[0].fs == NULL) {
         //myprintf("Invalid file mode or file not opened!\r\n");
         return 1; // Error: some invalid file
     }
 
-    FIL *selectedFile = &files[mode];
+    FIL *selectedFile = &files[0];
     BYTE buffer[BUF_SIZE];
     int total_lines = 0;
 
@@ -37,6 +45,8 @@ uint8_t readRandomJokes(uint8_t mode, char *fillBuffer) {
     while (f_gets((TCHAR *)buffer, sizeof(buffer), selectedFile) != NULL) {
         total_lines++;
     }
+
+    //total_lines = 11;
     f_lseek(selectedFile, 0);
 
     if (total_lines == 0) {
@@ -68,8 +78,7 @@ uint8_t readRandomJokes(uint8_t mode, char *fillBuffer) {
     return 0; // Success
 }
 
-uint8_t sdCardInit() {
-    FATFS FatFs;   // FatFs handle
+uint8_t sdCardInit(uint8_t mod) {
     FRESULT fres;  // Result after operations
 
     // Mount the file system
@@ -79,19 +88,20 @@ uint8_t sdCardInit() {
         return 1; // Error: failed to mount
     }
 
-    const char *fileNames[MAX_FILES] = {"joke1.txt", "joke2.txt", "joke3.txt", "joke4.txt", "joke5.txt", "joke6.txt", "joke7.txt", "joke8.txt"};
 
-    for (int i = 0; i < MAX_FILES && fileNames[i] != NULL; i++) {
-        fres = f_open(&files[i], fileNames[i], FA_READ);
+    const char *fileName = file[mod];
+
+    // for (int i = 0; i < MAX_FILES && fileNames[i] != NULL; i++) {
+        fres = f_open(&files[0], fileName, FA_READ);
         if (fres != FR_OK) {
             //myprintf("Failed to open %s (%i)\r\n", fileNames[i], fres);
             // Close all previously opened files
-            for (int j = 0; j < i; j++) {
-                f_close(&files[j]);
-            }
+           // for (int j = 0; j < i; j++) {
+                f_close(&files[0]);
+            //}
             return 1; // Error: failed to open a file
         }
-    }
+    //}
 
     //myprintf("All joke files opened successfully!\r\n");
     return 0; // Success

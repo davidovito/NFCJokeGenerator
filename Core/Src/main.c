@@ -103,10 +103,11 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+  //  sdCardInit();
 
   ledInit();
 
-  char joke[250];
+  char joke[300];
   char msg[250];
 
   srand(time(NULL));
@@ -128,16 +129,21 @@ int main(void)
 
      } else {
     	 ledSendAnimation();
-         sdCardInit();
+    	  sdCardInit(pushButton);
 
+    	 readRandomJokes(pushButton, joke);
+  	  	 //sprintf(msg, "vtip:%s\r\n", joke);
+  	  	 //USART2_PutBuffer(msg, strlen(msg));
+  	  	 //LL_mDelay(250);
 
-         readRandomJokes(pushButton, joke);
   	  	 uint8_t ndef[strlen(joke)+13];
          convert_to_NDEF(&joke, &ndef);
-  	  	 sprintf(msg, "%s size(strlen): %d size sizeof: %d\r\n", joke, strlen(joke), sizeof(joke));
-  	  	 USART2_PutBuffer(msg, strlen(msg));
-  	  	 LL_mDelay(150);
+  	  	 //sprintf(msg, "%s size(strlen): %d size sizeof: %d\r\n", joke, strlen(joke), sizeof(joke));
+  	  	 //USART2_PutBuffer(msg, strlen(msg));
+  	  	 //LL_mDelay(150);
   	  	 Write_Joke_TO_NFC(&ndef, sizeof(ndef));
+  	  	 LL_mDelay(150);
+
      }
     /* USER CODE END WHILE */
 
