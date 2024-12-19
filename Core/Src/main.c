@@ -30,11 +30,6 @@
 #include "nfc_io.h"
 
 /* USER CODE BEGIN Includes */
-<<<<<<< HEAD
-#include "ws28xx.h"
-#include "m24sr.h"
-=======
->>>>>>> devel1
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,30 +103,17 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-<<<<<<< HEAD
-
-  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
-
-
-
-
-  //char joke[250];
-=======
 
   ledInit();
   sdCardInit();
   char joke[250];
->>>>>>> devel1
   char msg[250];
   char joke[250];
 
-<<<<<<< HEAD
   srand(time(NULL));
 
    M24SR_ManageRFGPO(NFC_WRITE, 1);
 
-=======
->>>>>>> devel1
 
   /* USER CODE END 2 */
 

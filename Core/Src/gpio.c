@@ -89,11 +89,7 @@ void MX_GPIO_Init(void)
   EXTI_InitStruct.Line_32_63 = LL_EXTI_LINE_NONE;
   EXTI_InitStruct.LineCommand = ENABLE;
   EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
-<<<<<<< HEAD
-  EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
-=======
   EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;
->>>>>>> devel1
   LL_EXTI_Init(&EXTI_InitStruct);
 
   /* EXTI interrupt init*/

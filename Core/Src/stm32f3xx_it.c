@@ -253,21 +253,6 @@ void DMA1_Channel7_IRQHandler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-<<<<<<< HEAD
-  /* USER CODE BEGIN EXTI9_5_IRQn 0 */
-
-  /* USER CODE END EXTI9_5_IRQn 0 */
-  if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_5) != RESET)
-  {
-    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_5);
-    /* USER CODE BEGIN LL_EXTI_LINE_5 */
-
-    /* USER CODE END LL_EXTI_LINE_5 */
-  }
-  /* USER CODE BEGIN EXTI9_5_IRQn 1 */
-
-  /* USER CODE END EXTI9_5_IRQn 1 */
-=======
     if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_5)) {
         uint32_t currentTime = HAL_GetTick(); // Aktuálny čas
 
@@ -284,7 +269,6 @@ void EXTI9_5_IRQHandler(void)
         // Vyčistiť príznak prerušenia
         LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_5);
     }
->>>>>>> devel1
 }
 
 /**

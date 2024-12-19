@@ -110,14 +110,9 @@ PA4.GPIOParameters=GPIO_Label
 PA4.GPIO_Label=DET
 PA4.Locked=true
 PA4.Signal=GPIO_Input
-<<<<<<< HEAD
-PA5.GPIOParameters=GPIO_PuPd,GPIO_Label
-PA5.GPIO_Label=Jokes_Button
-=======
 PA5.GPIOParameters=GPIO_PuPd,GPIO_Label,GPIO_ModeDefaultEXTI
 PA5.GPIO_Label=Jokes_Button
 PA5.GPIO_ModeDefaultEXTI=GPIO_MODE_IT_RISING
->>>>>>> devel1
 PA5.GPIO_PuPd=GPIO_PULLUP
 PA5.Locked=true
 PA5.Signal=GPXTI5
