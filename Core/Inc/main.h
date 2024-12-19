@@ -41,7 +41,12 @@ extern "C" {
 #include "stm32f3xx_ll_gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
+#include "ws28xx.h"
+
 /* USER CODE BEGIN Includes */
+
+extern uint8_t pushButton;
+extern uint32_t lastDebounceTime;
 
 /* USER CODE END Includes */
 
