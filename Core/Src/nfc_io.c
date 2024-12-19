@@ -10,6 +10,10 @@
 #include "m24sr.h"
 
 uint8_t DefaultPassword[16] = DEFAULT_PASSWORD_INIT;
+uint8_t previous_state = 0;
+uint8_t sample =0;
+WS28XX_HandleTypeDef neopixel;
+
 
 
 uint16_t NFC_IO_IsDeviceReady(uint8_t Addr, uint32_t Trials)
@@ -120,3 +124,84 @@ uint16_t Write_Joke_TO_NFC(uint8_t *ndef_message, uint16_t celkova_dlzka)
 }
 
 
+void ledLight(uint8_t klik){
+    switch(klik){
+		case 1:
+			resetLight(&neopixel);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 50, 0, 0);
+			WS28XX_Update(&neopixel);
+			break;
+		case 2:
+			resetLight(&neopixel);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 50, 25, 0);
+			WS28XX_Update(&neopixel);
+			break;
+		case 3:
+			resetLight(&neopixel);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 50, 50, 0);
+			WS28XX_Update(&neopixel);
+			break;
+		case 4:
+			resetLight(&neopixel);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 0, 50, 0);
+			WS28XX_Update(&neopixel);
+			break;
+		case 5:
+			resetLight(&neopixel);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 0, 0, 50);
+			WS28XX_Update(&neopixel);
+			break;
+		case 6:
+			resetLight(&neopixel);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 25, 0, 50);
+			WS28XX_Update(&neopixel);
+			break;
+		case 7:
+			resetLight(&neopixel);
+			WS28XX_SetPixel_RGB(&neopixel, klik, 30, 10, 50);
+			WS28XX_Update(&neopixel);
+        	break;
+		default:
+			resetLight(&neopixel);
+			WS28XX_SetPixel_RGB(&neopixel, 0, 50, 50, 50);
+			WS28XX_Update(&neopixel);
+    }
+}
+
+void resetLight(){
+	WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+	WS28XX_SetPixel_RGB(&neopixel, 0, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 1, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 2, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 3, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 4, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 5, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 6, 0, 0, 0);
+	WS28XX_SetPixel_RGB(&neopixel, 7, 0, 0, 0);
+	WS28XX_Update(&neopixel);
+}
+
+void ledInit(){
+	WS28XX_Init(&neopixel, &htim1, 64, TIM_CHANNEL_1,  8);
+}
+
+
+void ledSendAnimation(){
+	resetLight();
+
+	for(int i=8; i>=0; i--){
+		WS28XX_SetPixel_RGB(&neopixel, i, rand() % LED_BRIGHTNESS, rand() % LED_BRIGHTNESS, rand() % LED_BRIGHTNESS);
+		WS28XX_Update(&neopixel);
+		LL_mDelay(49);
+		resetLight();
+	}
+
+
+	for(int k=0; k<8; k++){
+		WS28XX_SetPixel_RGB(&neopixel, k, rand() % LED_BRIGHTNESS, rand() % LED_BRIGHTNESS, rand() % LED_BRIGHTNESS);
+		WS28XX_Update(&neopixel);
+		LL_mDelay(49);
+		resetLight();
+	}
+
+}

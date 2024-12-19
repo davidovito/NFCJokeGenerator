@@ -41,14 +41,13 @@ extern "C" {
 #include "stm32f3xx_ll_gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-extern uint8_t pushButton;
+#include "ws28xx.h"
 
-enum EDGE_TYPE {
-	 NONE = 0,
-	 RISE = 1,
-	 FALL = 2
-};
+/* USER CODE BEGIN Includes */
+
+extern uint8_t pushButton;
+extern uint32_t lastDebounceTime;
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -70,7 +69,7 @@ enum EDGE_TYPE {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-enum EDGE_TYPE edgeDetect(uint16_t pin_state, uint16_t samples);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
