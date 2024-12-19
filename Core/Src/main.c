@@ -105,14 +105,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   ledInit();
-  sdCardInit();
+
   char joke[250];
   char msg[250];
-  char joke[250];
 
   srand(time(NULL));
 
-   M24SR_ManageRFGPO(NFC_WRITE, 1);
+  M24SR_Init(NFC_WRITE, M24SR_GPO_POLLING);
+  M24SR_ManageRFGPO(NFC_WRITE, 1);
 
 
   /* USER CODE END 2 */
@@ -122,6 +122,23 @@ int main(void)
   while (1)
   {
 
+     if (LL_GPIO_IsInputPinSet(I2C_GPO_GPIO_Port, I2C_GPO_Pin)){
+    	 ledLight(pushButton);
+    	 LL_mDelay(50);
+
+     } else {
+    	 ledSendAnimation();
+         sdCardInit();
+
+
+         readRandomJokes(pushButton, joke);
+  	  	 uint8_t ndef[strlen(joke)+13];
+         convert_to_NDEF(&joke, &ndef);
+  	  	 sprintf(msg, "%s size(strlen): %d size sizeof: %d\r\n", joke, strlen(joke), sizeof(joke));
+  	  	 USART2_PutBuffer(msg, strlen(msg));
+  	  	 LL_mDelay(150);
+  	  	 Write_Joke_TO_NFC(&ndef, sizeof(ndef));
+     }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

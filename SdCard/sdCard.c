@@ -79,7 +79,7 @@ uint8_t sdCardInit() {
         return 1; // Error: failed to mount
     }
 
-    const char *fileNames[MAX_FILES] = {"jokes.txt", "jokes2.txt"};
+    const char *fileNames[MAX_FILES] = {"joke1.txt", "joke2.txt", "joke3.txt", "joke4.txt", "joke5.txt", "joke6.txt", "joke7.txt", "joke8.txt"};
 
     for (int i = 0; i < MAX_FILES && fileNames[i] != NULL; i++) {
         fres = f_open(&files[i], fileNames[i], FA_READ);
